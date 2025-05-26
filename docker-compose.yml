@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./netflix-api
+    ports:
+      - "5000:3000"
+    container_name: netflix-api
+    restart: always
+
+  frontend:
+    build:
+      context: ./netflix-ui
+    ports:
+      - "3000:3000"
+    container_name: netflix-ui
+    restart: always
+    depends_on:
+      - backend
