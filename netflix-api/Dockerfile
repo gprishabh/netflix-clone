@@ -1,18 +1,20 @@
-# Use Node.js LTS
-FROM node:14
+# Use an official Node.js runtime as the base image
+FROM node:18
 
-# Create app directory
+# Set working directory
 WORKDIR /app
 
-# Install dependencies
+# Copy package.json and package-lock.json
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
-# Copy the rest of the code
+# Copy source code
 COPY . .
 
-# Expose the port used by server.js
-EXPOSE 3000
+# Expose the API port
+EXPOSE 5000
 
-# Start the API server
+# Start the backend
 CMD ["node", "server.js"]

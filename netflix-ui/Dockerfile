@@ -1,18 +1,20 @@
-# Use Node.js LTS
-FROM node:14
+# Use an official Node.js runtime as the base image
+FROM node:18
 
-# Create app directory
+# Set working directory
 WORKDIR /app
 
-# Install dependencies
+# Copy package.json and package-lock.json
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
-# Copy source code
+# Copy the rest of the application code
 COPY . .
 
-# Expose frontend port (React default is 3000)
+# Expose the app's port
 EXPOSE 3000
 
-# Start React app
+# Start the React app
 CMD ["npm", "start"]
