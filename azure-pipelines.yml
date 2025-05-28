@@ -16,7 +16,6 @@ steps:
 - task: Docker@2
   displayName: 'Build Frontend Image'
   inputs:
-    containerRegistry: '$(dockerRegistryServiceConnection)'
     repository: '$(imageNameFrontend)'
     command: 'build'
     Dockerfile: 'netflix-ui/Dockerfile'
@@ -25,7 +24,6 @@ steps:
 - task: Docker@2
   displayName: 'Build Backend Image'
   inputs:
-    containerRegistry: '$(dockerRegistryServiceConnection)'
     repository: '$(imageNameBackend)'
     command: 'build'
     Dockerfile: 'netflix-api/Dockerfile'
@@ -33,5 +31,5 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    pathToPublish: 'docker-compose.yml'
     artifactName: 'drop'
