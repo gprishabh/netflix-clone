@@ -2,14 +2,14 @@ version: '3.8'
 
 services:
   backend:
-    build: ./netflix-api
+    image: rkhosla/netflix-api:latest
     ports:
       - "5000:5000"
     container_name: netflix-api
     restart: always
 
   frontend:
-    build: ./netflix-ui
+    image: rkhosla/netflix-ui:latest
     ports:
       - "3000:3000"
     container_name: netflix-ui

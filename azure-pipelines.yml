@@ -7,29 +7,46 @@ pool:
 variables:
   imageNameFrontend: 'netflix-ui'
   imageNameBackend: 'netflix-api'
+  dockerHubConnection: 'rishabh-dockerhub-conn'
+  dockerHubUsername: 'rkhosla'
 
 steps:
 - task: DockerInstaller@0
   inputs:
     dockerVersion: '17.09.0-ce'
 
-- task: Docker@2
-  displayName: 'Build Frontend Image'
-  inputs:
-    repository: '$(imageNameFrontend)'
-    command: 'build'
-    Dockerfile: 'netflix-ui/Dockerfile'
-    tags: 'latest'
+# - task: Docker@2
+#   displayName: 'Build & Push Frontend Image'
+#   inputs:
+#     containerRegistry: '$(dockerHubConnection)'
+#     repository: '$(dockerHubUsername)/$(imageNameFrontend)'
+#     command: 'buildAndPush'
+#     Dockerfile: 'netflix-ui/Dockerfile'
+#     tags: 'latest'
 
-- task: Docker@2
-  displayName: 'Build Backend Image'
-  inputs:
-    repository: '$(imageNameBackend)'
-    command: 'build'
-    Dockerfile: 'netflix-api/Dockerfile'
-    tags: 'latest'
+# - task: Docker@2
+#   displayName: 'Build & Push Backend Image'
+#   inputs:
+#     containerRegistry: '$(dockerHubConnection)'
+#     repository: '$(dockerHubUsername)/$(imageNameBackend)'
+#     command: 'buildAndPush'
+#     Dockerfile: 'netflix-api/Dockerfile'
+#     tags: 'latest'
 
-- task: PublishBuildArtifacts@1
+- task: CopyFilesOverSSH@0
+  displayName: 'Securely copy files to the remote machine'
   inputs:
-    pathToPublish: 'docker-compose.yml'
-    artifactName: 'drop'
+    sshEndpoint: 'gcp-ssh-connection'
+    sourceFolder: '$(System.DefaultWorkingDirectory)/_gprishabh.netflix-clone/drop'
+    targetFolder: '/netflix-clone/'
+
+- task: SSH@0
+  displayName: 'Run shell inline on remote machine'
+  inputs:
+    sshEndpoint: 'gcp-ssh-connection'
+    runOptions: inline
+    inline: |
+     cd ~/netflix-clone
+     
+     docker-compose down
+     docker-compose up -d
