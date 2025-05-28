@@ -33,11 +33,18 @@ steps:
 #     Dockerfile: 'netflix-api/Dockerfile'
 #     tags: 'latest'
 
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish docker-compose.yml as artifact'
+  inputs:
+    PathtoPublish: 'docker-compose.yml'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
 - task: CopyFilesOverSSH@0
   displayName: 'Securely copy files to the remote machine'
   inputs:
     sshEndpoint: 'gcp-ssh-connection'
-    sourceFolder: '$(System.DefaultWorkingDirectory)/_gprishabh.netflix-clone/drop'
+    sourceFolder: '$(System.DefaultWorkingDirectory)/drop'
     targetFolder: '/netflix-clone/'
 
 - task: SSH@0
