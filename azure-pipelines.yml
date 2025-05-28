@@ -7,6 +7,8 @@ pool:
 variables:
   imageNameFrontend: 'netflix-ui'
   imageNameBackend: 'netflix-api'
+  dockerHubConnection: 'rishabh-dockerhub-conn'
+  dockerHubUsername: 'rkhosla'
 
 steps:
 - task: DockerInstaller@0
@@ -14,22 +16,25 @@ steps:
     dockerVersion: '17.09.0-ce'
 
 - task: Docker@2
-  displayName: 'Build Frontend Image'
+  displayName: 'Build & Push Frontend Image'
   inputs:
-    repository: '$(imageNameFrontend)'
-    command: 'build'
+    containerRegistry: '$(dockerHubConnection)'
+    repository: '$(dockerHubUsername)/$(imageNameFrontend)'
+    command: 'buildAndPush'
     Dockerfile: 'netflix-ui/Dockerfile'
     tags: 'latest'
 
 - task: Docker@2
-  displayName: 'Build Backend Image'
+  displayName: 'Build & Push Backend Image'
   inputs:
-    repository: '$(imageNameBackend)'
-    command: 'build'
+    containerRegistry: '$(dockerHubConnection)'
+    repository: '$(dockerHubUsername)/$(imageNameBackend)'
+    command: 'buildAndPush'
     Dockerfile: 'netflix-api/Dockerfile'
     tags: 'latest'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathToPublish: 'docker-compose.yml'
-    artifactName: 'drop'
+    PathtoPublish: 'docker-compose.yml'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
