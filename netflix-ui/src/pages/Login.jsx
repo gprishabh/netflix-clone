@@ -45,11 +45,11 @@ function Login() {
 
               <input
                 type="password"
-                placeholder="password"
+                placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
               />
-              <button onClick={handleLogin}>Login to your account</button>
+              <button onClick={handleLogin}>Sign In</button>
             </div>
           </div>
         </div>

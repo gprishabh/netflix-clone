@@ -24,11 +24,11 @@ steps:
     Dockerfile: 'netflix-ui/Dockerfile'
     tags: 'latest'
 
-# - task: Docker@2
-#   displayName: 'Build & Push Backend Image'
-#   inputs:
-#     containerRegistry: '$(dockerHubConnection)'
-#     repository: '$(dockerHubUsername)/$(imageNameBackend)'
-#     command: 'buildAndPush'
-#     Dockerfile: 'netflix-api/Dockerfile'
-#     tags: 'latest'
+- task: Docker@2
+  displayName: 'Build & Push Backend Image'
+  inputs:
+    containerRegistry: '$(dockerHubConnection)'
+    repository: '$(dockerHubUsername)/$(imageNameBackend)'
+    command: 'buildAndPush'
+    Dockerfile: 'netflix-api/Dockerfile'
+    tags: 'latest'
